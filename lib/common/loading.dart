@@ -9,6 +9,10 @@ class Loading extends StatelessWidget {
     return Center(
       child: Neumorphic(
               style: NeumorphicStyle(
+                border: NeumorphicBorder(
+                  color: grey.withOpacity(0.2),
+                  width: 0.8,
+                ),
                 shape: NeumorphicShape.concave,
                 intensity: 0.75,
                 surfaceIntensity: 0.3,
@@ -21,7 +25,7 @@ class Loading extends StatelessWidget {
                 height: MediaQuery.of(context).size.height /2,
                 child: Center(
                   child: SpinKitFadingCircle(
-                    color: blue,
+                    color: grey,
                     size: 30,
           ),
                 ),

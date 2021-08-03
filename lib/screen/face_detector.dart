@@ -25,6 +25,9 @@ class _FaceDetectorState extends State<FaceDetector>
   Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
   double _fabHeight = 100.0;
+  double _depthFloatingButton = 4;
+  Color _active = grey;
+  Color _noActive = black;
 
   @override
   initState() {
@@ -37,7 +40,7 @@ class _FaceDetectorState extends State<FaceDetector>
         Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _buttonColor = ColorTween(
       begin: white,
-      end: redAccent,
+      end: redAccent.withOpacity(0.8),
     ).animate(CurvedAnimation(
       parent: _animationController,
       curve: Interval(
@@ -69,19 +72,24 @@ class _FaceDetectorState extends State<FaceDetector>
   animate() {
     if (!isOpened) {
       _animationController.forward();
+      _depthFloatingButton = -4;
     } else {
       _animationController.reverse();
+      _depthFloatingButton = 4;
     }
     isOpened = !isOpened;
   }
 
-  Widget add() {
+  Widget refresh() {
     return Container(
       child: NeumorphicFloatingActionButton(
         style: NeumorphicStyle(
-          shape: NeumorphicShape.flat,
-          depth: -8,
-          shadowLightColorEmboss: grey,
+          border: NeumorphicBorder(
+            color: grey.withOpacity(0.2),
+            width: 1,
+          ),
+          depth: -4,
+          shadowLightColor: grey,
         ),
         onPressed: (){
           setState(() {
@@ -89,7 +97,7 @@ class _FaceDetectorState extends State<FaceDetector>
           });
         },
         tooltip: 'Refresh',
-        child: Icon(Icons.refresh),
+        child: Icon(Icons.refresh, color: grey,),
       ),
     );
   }
@@ -98,15 +106,18 @@ class _FaceDetectorState extends State<FaceDetector>
     return Container(
       child: NeumorphicFloatingActionButton(
         style: NeumorphicStyle(
-          shape: NeumorphicShape.flat,
-          depth: -8,
-          shadowLightColorEmboss: grey,
+          border: NeumorphicBorder(
+            color: grey.withOpacity(0.2),
+            width: 1,
+          ),
+          depth: -4,
+          shadowLightColor: grey,
         ),
         onPressed: (){
           getImage(true);
         },
         tooltip: 'Take a Photo',
-        child: Icon(Icons.camera_alt),
+        child: Icon(Icons.camera_alt, color: grey,),
       ),
     );
   }
@@ -115,15 +126,18 @@ class _FaceDetectorState extends State<FaceDetector>
     return Container(
       child: NeumorphicFloatingActionButton(
         style: NeumorphicStyle(
-          shape: NeumorphicShape.flat,
-          depth: -8,
-          shadowLightColorEmboss: grey,
+          border: NeumorphicBorder(
+            color: grey.withOpacity(0.2),
+            width: 1,
+          ),
+          depth: -4,
+          shadowLightColor: grey,
         ),
         onPressed: (){
           getImage(false);
         },
         tooltip: 'Select Photos',
-        child: Icon(Icons.image),
+        child: Icon(Icons.image, color: grey,),
       ),
     );
   }
@@ -132,10 +146,14 @@ class _FaceDetectorState extends State<FaceDetector>
     return Container(
       child: NeumorphicFloatingActionButton(
         style: NeumorphicStyle(
+          border: NeumorphicBorder(
+            color: grey.withOpacity(0.2),
+            width: 1,
+          ),
           color: _buttonColor.value,
           shape: NeumorphicShape.flat,
-          depth: -8,
-          shadowLightColorEmboss: grey,
+          depth: _depthFloatingButton,
+          shadowLightColor: grey,
         ),
         onPressed: animate,
         tooltip: 'Menu',
@@ -143,6 +161,7 @@ class _FaceDetectorState extends State<FaceDetector>
           child: AnimatedIcon(
             icon: AnimatedIcons.menu_close,
             progress: _animateIcon,
+            color: isOpened ? _noActive : _active,
           ),
         ),
       ),
@@ -206,37 +225,40 @@ class _FaceDetectorState extends State<FaceDetector>
           child: Column(
             children: <Widget>[
               SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  NeumorphicIcon(
-                    Icons.face,
-                    size: 50,
-                    style: NeumorphicStyle(
-                      shape: NeumorphicShape.flat,
-                      oppositeShadowLightSource: true,
-                      intensity: 0.75,
-                      surfaceIntensity: 0.3,
-                      color: white,
-                      depth: 8,
-                      shadowLightColor: grey,
-                    ),
+              Neumorphic(
+                style: NeumorphicStyle(
+                  border: NeumorphicBorder(
+                    color: grey.withOpacity(0.2),
+                    width: 1.5,
                   ),
-                  NeumorphicText(
-                      ' Image Face Detection',
-                      style: NeumorphicStyle(
-                        oppositeShadowLightSource: true,
-                        shape: NeumorphicShape.flat,
-                        color: white,
-                        depth: 4,
-                        shadowLightColor: black,
+                  shape: NeumorphicShape.concave,
+                  intensity: 0.75,
+                  surfaceIntensity: 0.3,
+                  color: white,
+                  depth: -4,
+                  shadowLightColor: grey,
+                ),
+                child: Container(
+                  height: 60,
+                  width: 375,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      NeumorphicIcon(
+                        Icons.face,
+                        size: 50,
+                        style: NeumorphicStyle(
+                          oppositeShadowLightSource: true,
+                          color: white,
+                          depth: 4,
+                          shadowLightColor: grey,
+                        ),
                       ),
-                      textStyle: NeumorphicTextStyle(
-                        fontSize: 25, //customize size here
-                      )
-                  )
-                ],
+                      CustomText(text: ' Image Face Detection', color: grey, size: 25,)
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: 50,),
               isLoading
@@ -245,51 +267,49 @@ class _FaceDetectorState extends State<FaceDetector>
                   ? Center(
                 child: Neumorphic(
                   style: NeumorphicStyle(
+                    border: NeumorphicBorder(
+                      color: grey.withOpacity(0.2),
+                      width: 3,
+                    ),
                     shape: NeumorphicShape.concave,
                     intensity: 0.75,
                     surfaceIntensity: 0.3,
                     color: white,
-                    depth: 8,
+                    depth: 6,
                     shadowLightColor: grey,
                   ),
                   child: Container(
                     width: MediaQuery.of(context).size.width / 1.1,
                     height: MediaQuery.of(context).size.height / 2,
                     child: Center(
-                        child: NeumorphicText(
-                            'No Image Selected',
-                            style: NeumorphicStyle(
-                              oppositeShadowLightSource: true,
-                              shape: NeumorphicShape.flat,
-                              color: white,
-                              depth: 4,
-                              shadowLightColor: black,
-                            ),
-                            textStyle: NeumorphicTextStyle(
-                              fontSize: 25, //customize size here
-                            )
-                        )
+                        child: CustomText(text: 'No Image Selected', color: grey, size: 23,)
                     ),
                   ),
                 ),
               ) : Center(
-                child: Neumorphic(
-                  style: NeumorphicStyle(
-                    shape: NeumorphicShape.concave,
-                    intensity: 0.75,
-                    surfaceIntensity: 0.3,
-                    color: white,
-                    depth: 8,
-                    shadowLightColor: grey,
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.only(left: 10, right: 10),
-                    child: FittedBox(
-                      child: SizedBox(
-                        width: _image.width.toDouble(),
-                        height: _image.height.toDouble(),
-                        child: CustomPaint(
-                          painter: FacePainter(_image, _face),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Neumorphic(
+                    style: NeumorphicStyle(
+                      border: NeumorphicBorder(
+                        color: grey.withOpacity(0.2),
+                        width: 3,
+                      ),
+                      shape: NeumorphicShape.concave,
+                      color: white,
+                      intensity: 0.75,
+                      surfaceIntensity: 0.3,
+                      depth: 6,
+                      shadowLightColor: grey,
+                    ),
+                    child: Container(
+                      child: FittedBox(
+                        child: SizedBox(
+                          width: _image.width.toDouble(),
+                          height: _image.height.toDouble(),
+                          child: CustomPaint(
+                            painter: FacePainter(_image, _face),
+                          ),
                         ),
                       ),
                     ),
@@ -298,7 +318,7 @@ class _FaceDetectorState extends State<FaceDetector>
               ),
               Visibility(
                   visible: _imageFile != null ? false : true,
-                  child: SizedBox(height: 125,)),
+                  child: SizedBox(height: 120,)),
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 child: Padding(
@@ -306,11 +326,14 @@ class _FaceDetectorState extends State<FaceDetector>
                   child: _imageFile != null ? Container()
                       : Neumorphic(
                     style: NeumorphicStyle(
-                      shape: NeumorphicShape.concave,
+                      border: NeumorphicBorder(
+                        color: grey.withOpacity(0.2),
+                        width: 1,
+                      ),
                       intensity: 0.75,
                       surfaceIntensity: 0.3,
                       color: white,
-                      depth: 8,
+                      depth: -4,
                       shadowLightColor: grey,
                     ),
                     child: Container(
@@ -350,7 +373,7 @@ class _FaceDetectorState extends State<FaceDetector>
                 _translateButton.value * 3.0,
                 0.0,
               ),
-              child: add()),
+              child: refresh()),
           SizedBox(height: 8,),
           Transform(
               transform: Matrix4.translationValues(
