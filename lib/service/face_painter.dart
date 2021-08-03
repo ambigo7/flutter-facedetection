@@ -21,7 +21,7 @@ class FacePainter extends CustomPainter{
   void paint(ui.Canvas canvas, ui.Size size){
     final Paint paint = Paint()
         ..style = PaintingStyle.stroke
-        ..blendMode = BlendMode.color
+        ..blendMode = BlendMode.hardLight
         ..strokeWidth = 5.0
         ..color = green;
 

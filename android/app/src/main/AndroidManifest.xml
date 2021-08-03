@@ -4,7 +4,7 @@
         android:name="com.google.mlkit.vision.DEPENDENCIES"
         android:value="face" />
    <application
-        android:label="face detection"
+        android:label="Face Detection"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
