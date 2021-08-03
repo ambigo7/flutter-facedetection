@@ -105,7 +105,7 @@ class _FaceDetectorState extends State<FaceDetector>
         onPressed: (){
           getImage(true);
         },
-        tooltip: 'Image',
+        tooltip: 'Take a Photo',
         child: Icon(Icons.camera_alt),
       ),
     );
@@ -122,7 +122,7 @@ class _FaceDetectorState extends State<FaceDetector>
         onPressed: (){
           getImage(false);
         },
-        tooltip: 'Select a Photos',
+        tooltip: 'Select Photos',
         child: Icon(Icons.image),
       ),
     );
