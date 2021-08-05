@@ -21,8 +21,7 @@ class FacePainter extends CustomPainter{
   void paint(ui.Canvas canvas, ui.Size size){
     final Paint paint = Paint()
         ..style = PaintingStyle.stroke
-        ..blendMode = BlendMode.hardLight
-        ..strokeWidth = 5.0
+        ..strokeWidth = 7.0
         ..color = green;
 
     canvas.drawImage(image, Offset.zero, Paint());

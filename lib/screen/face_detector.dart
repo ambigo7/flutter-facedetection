@@ -255,7 +255,7 @@ class _FaceDetectorState extends State<FaceDetector>
                           shadowLightColor: grey,
                         ),
                       ),
-                      CustomText(text: ' Image Face Detection', color: grey, size: 25,)
+                      CustomText(text: ' Image Face Detector', color: grey, size: 25,)
                     ],
                   ),
                 ),
