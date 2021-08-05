@@ -207,6 +207,7 @@ class _FaceDetectorState extends State<FaceDetector>
     }
   }
 
+
   _loadImage(File file) async {
     final data = await file.readAsBytes();
     await decodeImageFromList(data).then((value) =>
